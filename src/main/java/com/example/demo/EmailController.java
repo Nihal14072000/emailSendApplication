@@ -12,6 +12,10 @@ public class EmailController {
 	@Autowired
 	private EmailService emailService;
 	
+	@GetMapping(value = "/")
+	public String callMethodDefault() {
+		return "Welcome To My Page";
+	}
 
 	@GetMapping(value = "/sendMailToMe")
 	public String callMethod() {
