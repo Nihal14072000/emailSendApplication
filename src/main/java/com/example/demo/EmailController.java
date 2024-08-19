@@ -2,6 +2,7 @@ package com.example.demo;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RestController;
 
@@ -21,5 +22,19 @@ public class EmailController {
 	public String callMethod() {
 		emailService.sendMailCall();
 		return "MailSent";
+	}
+	
+	@GetMapping(value = "/inputs")
+	public String getInputData() {
+		//emailService.sendMailCall();
+		return "<!DOCTYPE html>\r\n"
+				+ "<html>\r\n"
+				+ "<body>\r\n"
+				+ "\r\n"
+				+ "<h1>My First Heading</h1>\r\n"
+				+ "<p>My first paragraph.</p>\r\n"
+				+ "\r\n"
+				+ "</body>\r\n"
+				+ "</html>";
 	}
 }
