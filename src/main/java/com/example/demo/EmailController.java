@@ -41,6 +41,7 @@ public class EmailController {
 	
 	@GetMapping(value = "/sendMail")
 	public String sendMailToUser(@RequestParam ("mailId") String mailId) {
+		emailService.sendMailCall(mailId);
 		return "Mail send to " + mailId;
 	}
 }
