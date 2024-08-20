@@ -22,6 +22,11 @@ public class EmailService {
 		sendMail("nehal.kagwadkar@gmail.com", "Spring mail test", body);
 	}
 	
+	public void sendMailCall(String mailId) {
+		String body = createBody();
+		sendMail(mailId, "Spring mail test", body);
+	}
+	
 	private String createBody() {
 		String body = "Dear Nehal Kagwadkar,\r\n"
 				+ "\r\n"
