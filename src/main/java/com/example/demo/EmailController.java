@@ -60,4 +60,11 @@ public class EmailController {
 		System.out.println("mail send");
 		return "Mail send to " + mailId;
 	}
+	
+	/*<----------------------------------------------------------------------->*/
+	@PostMapping(value = "/checkLoginj")
+	public String checkLogin(@RequestParam ("mailId") String mailId) {
+		//emailService.sendMailCall(mailId);
+		return checkLogin(mailId);
+	}
 }
