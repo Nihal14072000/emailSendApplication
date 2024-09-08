@@ -42,4 +42,13 @@ public class EmailService {
 	public List<Employee> getAll() {
 		return emailDao.getAll();
 	}
+	
+	public String checkLogin(String mailId) {
+		List<Employee> empList = emailDao.getByMailId(mailId);
+		if(null != empList) {
+			return "Y";
+		}else {
+			return "N";
+		}
+	}
 }

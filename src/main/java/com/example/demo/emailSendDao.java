@@ -6,9 +6,6 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
-
-import javax.sql.DataSource;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -152,6 +149,38 @@ public class emailSendDao {
 				emp.setName(rs.getString("name"));
 				emp.setRole(rs.getString("role"));
 				empList.add(emp);
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				ps.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return empList;
+	}
+
+	public List<Employee> getByMailId(String mailId) {
+		String query = "select id, name, role from demo where login_id = ?";
+		List<Employee> empList = new ArrayList<Employee>();
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		try {
+			con = dbConf.dataSource().getConnection();
+			ps = con.prepareStatement(query);
+			rs = ps.executeQuery();
+			while (rs.next()) {
+				Employee emp = new Employee();
+				emp.setId(rs.getInt("id"));
+				emp.setName(rs.getString("name"));
+				emp.setRole(rs.getString("role"));
+				empList.add(emp);
+				return empList;
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
