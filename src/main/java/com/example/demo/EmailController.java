@@ -1,5 +1,7 @@
 package com.example.demo;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -14,9 +16,15 @@ public class EmailController {
 	@Autowired
 	private EmailService emailService;
 	
+	
 	@GetMapping(value = "/")
 	public String callMethodDefault() {
 		return "Welcome To My Page";
+	}
+	
+	@GetMapping(value = "/getAllData")
+	public List<Employee> getAllData() {
+		return emailService.getAll();
 	}
 
 	@GetMapping(value = "/sendMailToMe")
@@ -42,6 +50,14 @@ public class EmailController {
 	@GetMapping(value = "/sendMail")
 	public String sendMailToUser(@RequestParam ("mailId") String mailId) {
 		emailService.sendMailCall(mailId);
+		System.out.println("mail send");
+		return "Mail send to " + mailId;
+	}
+	
+	@PostMapping(value = "/sendMail")
+	public String sendMailToUserPost(@RequestParam ("mailId") String mailId) {
+		emailService.sendMailCall(mailId);
+		System.out.println("mail send");
 		return "Mail send to " + mailId;
 	}
 }
