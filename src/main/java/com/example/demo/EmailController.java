@@ -62,7 +62,7 @@ public class EmailController {
 	}
 	
 	/*<----------------------------------------------------------------------->*/
-	@PostMapping(value = "/checkLoginj")
+	@PostMapping(value = "/checkLogin")
 	public String checkLogin(@RequestParam ("mailId") String mailId) {
 		//emailService.sendMailCall(mailId);
 		return checkLogin(mailId);
