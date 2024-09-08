@@ -33,14 +33,13 @@ public class EmailService {
 	}
 
 	private String createBody() {
-		String body = "Dear Nehal Kagwadkar,\r\n" + "\r\n"
+		String body = "Dear User,\r\n" + "\r\n"
 				+ "I hope this email finds you well. This mail is being send from Spring Application "
 				+ "Thank you!\r\n" + "\r\n" + "Best,\r\n" + "\r\n" + "Nehal ";
 		return body;
 	}
 
 	public List<Employee> getAll() {
-		// TODO Auto-generated method stub
 		return emailDao.getAll();
 	}
 }
