@@ -5,6 +5,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.RestController;
@@ -63,8 +64,18 @@ public class EmailController {
 	
 	/*<----------------------------------------------------------------------->*/
 	@PostMapping(value = "/checkLogin")
-	public String checkLogin(@RequestParam ("mailId") String mailId) {
+	public User checkLogin(@RequestBody User user) {
+		
 		//emailService.sendMailCall(mailId);
-		return checkLogin(mailId);
+		return emailService.checkLogin(user);
 	}
+	
+	@PostMapping(value = "/register")
+	public User registerUser(@RequestBody User user) {
+		//emailService.sendMailCall(mailId);
+		return emailService.registerUser(user);
+	}
+	
+	//CORS error
+	//"C:\Program Files\Google\Chrome\Application\chrome.exe" --disable-web-security --disable-gpu --user-data-dir=%LOCALAPPDATA%\Google\chromeTemp
 }

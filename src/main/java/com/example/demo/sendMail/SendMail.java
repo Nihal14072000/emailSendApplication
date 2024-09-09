@@ -7,6 +7,7 @@ import org.springframework.mail.javamail.JavaMailSender;
 import org.springframework.stereotype.Service;
 
 import com.example.demo.Employee;
+import com.example.demo.User;
 import com.example.demo.emailSendDao;
 
 @Service
@@ -38,5 +39,22 @@ public class SendMail {
 		emp.setRole("Reciever");
 		emp.setMessageBody(body);
 		emailDao.save(emp);
+	}
+	
+	public void sendMailToUser(String toMail, String Subject, String body) {
+
+		SimpleMailMessage message = new SimpleMailMessage();
+		User user = new User();
+		message.setTo(toMail);
+		message.setFrom(from);
+		message.setText(body);
+		message.setSubject(Subject);
+		javaMailSender.send(message);
+
+		/** saving entry in database **/
+		user.setMailId(toMail);
+		user.setRole("Reciever");
+		//user.setMessageBody(body);
+		emailDao.saveUser(user,body);
 	}
 }

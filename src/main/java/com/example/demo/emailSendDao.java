@@ -6,6 +6,7 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.util.ArrayList;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Repository;
 
@@ -13,6 +14,9 @@ import org.springframework.stereotype.Repository;
 public class emailSendDao {
 
 	@Autowired
+	
+	
+	
 	private DbConfig dbConf;
 
 
@@ -163,10 +167,10 @@ public class emailSendDao {
 		}
 		return empList;
 	}
-
-	public List<Employee> getByMailId(String mailId) {
-		String query = "select id, name, role from demo where login_id = ?";
-		List<Employee> empList = new ArrayList<Employee>();
+	
+	public List<User> getAllUsers() {
+		String query = "select id from sys_app_user";
+		List<User> userList = new ArrayList<User>();
 		Connection con = null;
 		PreparedStatement ps = null;
 		ResultSet rs = null;
@@ -175,12 +179,9 @@ public class emailSendDao {
 			ps = con.prepareStatement(query);
 			rs = ps.executeQuery();
 			while (rs.next()) {
-				Employee emp = new Employee();
+				User emp = new User();
 				emp.setId(rs.getInt("id"));
-				emp.setName(rs.getString("name"));
-				emp.setRole(rs.getString("role"));
-				empList.add(emp);
-				return empList;
+				userList.add(emp);
 			}
 		} catch (SQLException e) {
 			e.printStackTrace();
@@ -193,7 +194,109 @@ public class emailSendDao {
 				e.printStackTrace();
 			}
 		}
-		return empList;
+		return userList;
+	}
+
+	public User getByMailId(User user) {
+		String query = "select id, login_id,first_name,last_name, role from sys_app_user where login_id = ? and password=?";
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		User u = new User();
+		try {
+			con = dbConf.dataSource().getConnection();
+			ps = con.prepareStatement(query);
+			ps.setString(1, user.getMailId());
+			ps.setString(2, user.getPassword());
+			System.out.println(ps);
+			rs = ps.executeQuery();
+			System.out.println(rs);
+			while (rs.next()) {
+				u.setMailId(rs.getString("login_id"));
+				u.setId(rs.getInt("id"));
+				u.setfName(rs.getString("first_name"));
+				u.setlName(rs.getString("last_name"));
+				u.setRole(rs.getString("role"));
+				//u.setRole(rs.getString("role"));
+				//empList.add(u);
+				return u;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				ps.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return u;
+	}
+
+	public User saveUser(User user,String body) {
+		String query = "insert into demo (id,name, role,mail_body) values (?,?,?,?)";
+		Connection con = null;
+		PreparedStatement ps = null;
+		try {
+			con = dbConf.dataSource().getConnection();
+			ps = con.prepareStatement(query);
+			int id = getAllUsers().size();
+			ps.setInt(1, id + 1);
+			ps.setString(2, user.getMailId());
+			ps.setString(3, user.getRole());
+			ps.setString(4, body);
+			
+			/*execute insert*/
+			ps.executeUpdate();
+			
+		} catch (Exception e) {
+			System.out.println(e.getMessage());
+		} finally {
+			try {
+				ps.close();
+				con.close();
+			} catch (Exception e) {
+				System.out.println(e.getMessage());
+			}
+		}
+		return user;
+	}
+
+	public User getUserByMailId(User user) {
+		String query = "select id, login_id,first_name,last_name, role from sys_app_user where login_id = ?";
+		Connection con = null;
+		PreparedStatement ps = null;
+		ResultSet rs = null;
+		User u = new User();
+		try {
+			con = dbConf.dataSource().getConnection();
+			ps = con.prepareStatement(query);
+			ps.setString(1, user.getMailId());
+			System.out.println(ps);
+			rs = ps.executeQuery();
+			System.out.println(rs);
+			while (rs.next()) {
+				u.setMailId(rs.getString("login_id"));
+				u.setId(rs.getInt("id"));
+				u.setfName(rs.getString("first_name"));
+				u.setlName(rs.getString("last_name"));
+				u.setRole(rs.getString("role"));
+				return u;
+			}
+		} catch (SQLException e) {
+			e.printStackTrace();
+		} finally {
+			try {
+				rs.close();
+				ps.close();
+				con.close();
+			} catch (SQLException e) {
+				e.printStackTrace();
+			}
+		}
+		return u;
 	}
 
 }

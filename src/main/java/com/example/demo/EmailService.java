@@ -43,12 +43,26 @@ public class EmailService {
 		return emailDao.getAll();
 	}
 	
-	public String checkLogin(String mailId) {
-		List<Employee> empList = emailDao.getByMailId(mailId);
-		if(null != empList) {
-			return "Y";
+	public User checkLogin(User user) {
+		User u = emailDao.getByMailId(user);
+		if(null != u) {
+			return u;
 		}else {
-			return "N";
+			return null;
 		}
+	}
+
+	public User registerUser(User user) {
+		User u1 = emailDao.getUserByMailId(user);
+		if(!user.getMailId().equalsIgnoreCase(u1.getMailId())) {
+			String body= "Dear "+user.getfName() + " " + user.getlName() + ",\r\n You have been registered to site successfully. Please login to check.";
+			user = emailDao.saveUser(user,body);
+			mailSend.sendMail(user.getMailId(), "Registration Seuccessful", body);
+			return user;
+		}else {
+			System.out.println("User exist already");
+			return null;
+		}
+		
 	}
 }
